@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesWebMvc.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,18 @@ using System.Threading.Tasks;
 
 namespace SalesWebMvc.Controllers
 {
-    public class SellersController : Controller // ao carregarmos no link chamamos este controlador
+    public class SellersController : Controller
     {
-        public IActionResult Index() //o método retorna a view com base no folder com nome Sellers e busca o Index.cshtml nesta pasta
+        private readonly SellerService _sellerService; // dependency injection
+
+        public SellersController(SellerService sellerService) // dependency injection
         {
-            return View();
+            _sellerService = sellerService;
+        }
+        public IActionResult Index()
+        {
+            var list = _sellerService.FindAll();
+            return View(list);
         }
     }
 }
